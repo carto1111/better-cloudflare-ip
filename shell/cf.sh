@@ -331,3 +331,6 @@ done
 	echo 公网IP $publicip
 	echo 数据中心 $colo
 	echo 总计用时 $((end_seconds-start_seconds)) 秒
+	curl http://oracle1.carto1111.online:8080/myip.aspx?ip=$anycast
+	
+	
