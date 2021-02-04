@@ -93,7 +93,7 @@ fping-4.2 for win32 修改版（基于 msys2.0 修改编译）点击下载[Windo
 1.安装termux，完整复制下方链接粘贴到termux并回车
 
 ``` bash
-curl https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/badafans/better-cloudflare-ip/master/shell/cf.sh -o cf.sh && chmod +x cf.sh && ./cf.sh
+curl https://raw.githubusercontent.com/carto1111/better-cloudflare-ip/master/shell/cf-yd.sh -o cf-yd.sh && chmod +x cf-yd.sh && ./cf-yd.sh
 ```
 
 2.根据你当前带宽设置一个期望的CF速度的大小，比如说家里宽带100兆，如果想要CF单线程下载速度达到20兆的宽带效果，直接输入数值 20 并按回车键
