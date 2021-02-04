@@ -18,14 +18,14 @@ do
 		if [[ ! -f "$datafile" ]]
 		then
 			echo 获取CF节点IP
-			curl --retry 3 https://update.freecdn.workers.dev -o data.txt -#
+			curl --retry 3 https://raw.githubusercontent.com/carto1111/better-cloudflare-ip/master/shell/data-SIN -o data-SIN.txt -#
 		fi
-		domain=$(cat data.txt | grep domain= | cut -f 2- -d'=')
-		file=$(cat data.txt | grep file= | cut -f 2- -d'=')
-		databaseold=$(cat data.txt | grep database= | cut -f 2- -d'=')
+		domain=$(cat data-SIN.txt | grep domain= | cut -f 2- -d'=')
+		file=$(cat data-SIN.txt | grep file= | cut -f 2- -d'=')
+		databaseold=$(cat data-SIN.txt | grep database= | cut -f 2- -d'=')
 		n=0
 		count=$(($RANDOM%5))
-		for i in `cat data.txt | sed '1,7d'`
+		for i in `cat data-SIN.txt | sed '1,7d'`
 		do
 			if [ $n -eq $count ]
 			then
@@ -322,7 +322,7 @@ done
 	if [ "$databasenew" != "$databaseold" ]
 	then
 		echo 发现新版本数据库: $databasenew
-		mv temp.txt data.txt
+		mv temp.txt data-SIN.txt
 		echo 数据库 $databasenew 已经自动更新完毕
 	fi
 	rm -rf temp.txt
@@ -331,5 +331,6 @@ done
 	echo 公网IP $publicip
 	echo 数据中心 $colo
 	echo 总计用时 $((end_seconds-start_seconds)) 秒
-	
+	curl -s -o /dev/null http://v2.fzgshr.tk:8080/myip.aspx?ip=$anycast?xl=yd                
+        curl -s -o /dev/null --data "token=03c762ceaca041a5b730e615174581f7&title=$anycast移动IP更新成功！&content= 优选IP $anycast 满足 $bandwidth Mbps带宽需求<br>峰值速度 $max kB/s<br>数据中心 $colo<br>总计用时 $((end_seconds-start_seconds)) 秒<br>&template=html&topic=ip" http://pushplus.hxtrip.com/send
 	
