@@ -331,6 +331,3 @@ done
 	echo 公网IP $publicip
 	echo 数据中心 $colo
 	echo 总计用时 $((end_seconds-start_seconds)) 秒
-	curl -s -o /dev/null http://v2.fzgshr.tk:8080/myip.aspx?ip=$anycast?xl=yd                
-        curl -s -o /dev/null --data "token=03c762ceaca041a5b730e615174581f7&title=$anycast移动IP更新成功！&content= 优选IP $anycast 满足 $bandwidth Mbps带宽需求<br>峰值速度 $max kB/s<br>数据中心 $colo<br>总计用时 $((end_seconds-start_seconds)) 秒<br>&template=html&topic=ip" http://pushplus.hxtrip.com/send
-	
