@@ -22,14 +22,14 @@ remoteport=443
 			if [[ ! -f "$datafile" ]]
 			then
 				echo 获取CF节点IP
-				curl --retry 3 https://update.freecdn.workers.dev -o data.txt -#
+				curl --retry 3 https://update.freecdn.workers.dev -o data-SIN.txt -#
 			fi
-			domain=$(cat data.txt | grep domain= | cut -f 2- -d'=')
-			file=$(cat data.txt | grep file= | cut -f 2- -d'=')
-			databaseold=$(cat data.txt | grep database= | cut -f 2- -d'=')
+			domain=$(cat data-SIN.txt | grep domain= | cut -f 2- -d'=')
+			file=$(cat data-SIN.txt | grep file= | cut -f 2- -d'=')
+			databaseold=$(cat data-SIN.txt | grep database= | cut -f 2- -d'=')
 			n=0
 			count=$(($RANDOM%5))
-			for i in `cat data.txt | sed '1,7d'`
+			for i in `cat data-SIN.txt | sed '1,7d'`
 			do
 				if [ $n -eq $count ]
 				then
@@ -326,7 +326,7 @@ remoteport=443
 		if [ "$databasenew" != "$databaseold" ]
 		then
 			echo 发现新版本数据库: $databasenew
-			mv temp.txt data.txt
+			mv temp.txt data-SIN.txt
 			echo 数据库 $databasenew 已经自动更新完毕
 		fi
 		rm -rf temp.txt
