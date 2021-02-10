@@ -337,5 +337,5 @@ remoteport=443
 		echo 总计用时 $((end_seconds-start_seconds)) 秒
 		
 		
-                  curl -s -o /dev/null http://v2.fzgshr.tk:8080/myip.aspx?ip=$anycast?xl=yd                
-                  curl -s -o /dev/null --data "token=03c762ceaca041a5b730e615174581f7&title=$anycast YD IP change&content=$anycast&template=html&topic=ip" http://pushplus.hxtrip.com/send
+                  curl -s -o /dev/null http://xxxxxx:8080/myip.aspx?ip=$anycast?xl=yd                
+                  curl -s -o /dev/null --data "token=xxxxxx&title=$anycast YD IP change&content=$anycast&template=html&topic=ip" http://pushplus.hxtrip.com/send
