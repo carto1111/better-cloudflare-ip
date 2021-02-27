@@ -4,7 +4,7 @@ cls
 cd "%~dp0"
 color A
 setlocal enabledelayedexpansion
-set /p Bandwidth=ÇëÉèÖÃÆÚÍûµ½ CloudFlare ·þÎñÆ÷µÄ´ø¿í´óÐ¡(µ¥Î» Mbps):
+set /p Bandwidth=è¯·è®¾ç½®æœŸæœ›åˆ° CloudFlare æœåŠ¡å™¨çš„å¸¦å®½å¤§å°(å•ä½ Mbps):
 set /a Speed=%Bandwidth%*128
 set /a startH=%time:~0,2%
 if %time:~3,1% EQU 0 (set /a startM=%time:~4,1%) else (set /a startM=%time:~3,2%)
@@ -14,7 +14,7 @@ goto start
 del ip.txt CR.txt CRLF.txt cut.txt speed.txt temp.txt
 RD /S /Q temp
 cls
-if not exist "data.txt" title »ñÈ¡CF½ÚµãIP&curl --retry 3 https://update.freecdn.workers.dev -o data.txt -#
+if not exist "data.txt" title èŽ·å–CFèŠ‚ç‚¹IP&curl --retry 3 https://update.udpfile.com -o data.txt -#
 for /f "tokens=2 delims==" %%a in ('findstr /C:"domain" data.txt') do (
 set domain=%%a
 )
@@ -24,17 +24,17 @@ set file=%%a
 for /f "tokens=2 delims==" %%a in ('findstr /C:"database" data.txt') do (
 set databaseold=%%a
 )
-title Éú³ÉCF½ÚµãIP
+title ç”ŸæˆCFèŠ‚ç‚¹IP
 set /a i=%random%%%5
 set /a n=0
 for /f "skip=7" %%a in (data.txt) do (
-if !n! EQU !i! (set /a randomip=!random!%%256&echo Éú³ÉËæ»úIP %%a!randomip!&echo %%a!randomip!>>ip.txt&set /a i+=4) else (set /a n+=1)
+if !n! EQU !i! (set /a randomip=!random!%%256&echo ç”ŸæˆéšæœºIP %%a!randomip!&echo %%a!randomip!>>ip.txt&set /a i+=4) else (set /a n+=1)
 )
 for /f "tokens=2 delims=:" %%a in ('find /c /v "" ip.txt') do (
 set /a count=%%a
 set /a count=count/30+1
 )
-title ²âÊÔ ICMP ¶ª°üÂÊ
+title æµ‹è¯• ICMP ä¸¢åŒ…çŽ‡
 fping -f ip.txt -c %count% --interval=1 -s > ping.csv
 findstr "%%" ping.csv > temp.csv
 del ping.csv
@@ -48,7 +48,7 @@ for /f "delims=" %%a in (ping.csv) do (
 set s=%%a
 set s=!s:~0,15!
 set /a a=a+1
-title ÌáÈ¡²âÊÔºóµÄIPµØÖ·----ÕýÔÚ´¦ÀíµÚ !a! ÐÐ
+title æå–æµ‹è¯•åŽçš„IPåœ°å€----æ­£åœ¨å¤„ç†ç¬¬ !a! è¡Œ
 echo !s%!>>sort.txt
 )
 del ping.csv
@@ -56,7 +56,7 @@ cls
 set count=0
 for /f "tokens=1,2" %%a in ('type "sort.txt"') do (
 echo %%a >> ip.txt
-title Ñ¡È¡30¸ö¶ª°üÂÊ×îÉÙµÄIPµØÖ·ÏÂÔØ²âËÙ
+title é€‰å–30ä¸ªä¸¢åŒ…çŽ‡æœ€å°‘çš„IPåœ°å€ä¸‹è½½æµ‹é€Ÿ
 set /a count+=1
 if !count! equ 30 goto speedtest
 )
@@ -66,12 +66,12 @@ mkdir temp
 cls
 for /f "tokens=1,2" %%a in ('type "ip.txt"') do (
 start /b curl --resolve !domain!:443:%%a https://!domain!/!file! -o temp/%%a -s --connect-timeout 2 --max-time 10
-echo %%a Æô¶¯²âËÙ
+echo %%a å¯åŠ¨æµ‹é€Ÿ
 )
 del ip.txt
 chcp 936
 cls
-echo µÈ´ý²âËÙ½ø³Ì½áÊø,É¸Ñ¡³öÈý¸öÓÅÑ¡µÄIP
+echo ç­‰å¾…æµ‹é€Ÿè¿›ç¨‹ç»“æŸ,ç­›é€‰å‡ºä¸‰ä¸ªä¼˜é€‰çš„IP
 timeout /T 15 /NOBREAK
 cd temp
 dir /o:-s /b > ../ip.txt
@@ -92,13 +92,13 @@ for /f "delims=" %%a in ('dir temp /b /a-d^| find /v /c "&#@"') do (
 		goto start
 		)
 	)
-title ÓÅÑ¡µÄIPµØÖ·Îª (!a!)-(!b!)-(!c!)
+title ä¼˜é€‰çš„IPåœ°å€ä¸º (!a!)-(!b!)-(!c!)
 goto one
 :one
 chcp 936
 del CRLF.txt cut.txt speed.txt
 cls
-echo µÚÒ»´Î²âÊÔ !a!
+echo ç¬¬ä¸€æ¬¡æµ‹è¯• !a!
 curl --resolve !domain!:443:!a! https://!domain!/!file! -o nul --connect-timeout 5 --max-time 10 > CR.txt 2>&1
 findstr "0:" CR.txt >> CRLF.txt
 CR2CRLF CRLF.txt
@@ -138,8 +138,8 @@ if !Max! GEQ !Speed! (cls&set anycast=!a!&goto end) else (goto two)
 chcp 936
 del CRLF.txt cut.txt speed.txt
 cls
-echo µÚÒ»´Î²âÊÔ !a! ²»Âú×ã´ø¿íÐèÇó,·åÖµËÙ¶È !Max! kB/s
-echo µÚ¶þ´Î²âÊÔ !a!
+echo ç¬¬ä¸€æ¬¡æµ‹è¯• !a! ä¸æ»¡è¶³å¸¦å®½éœ€æ±‚,å³°å€¼é€Ÿåº¦ !Max! kB/s
+echo ç¬¬äºŒæ¬¡æµ‹è¯• !a!
 curl --resolve !domain!:443:!a! https://!domain!/!file! -o nul --connect-timeout 5 --max-time 10 > CR.txt 2>&1
 findstr "0:" CR.txt >> CRLF.txt
 CR2CRLF CRLF.txt
@@ -179,8 +179,8 @@ if !Max! GEQ !Speed! (cls&set anycast=!a!&goto end) else (goto three)
 chcp 936
 del CRLF.txt cut.txt speed.txt
 cls
-echo µÚ¶þ´Î²âÊÔ !a! ²»Âú×ã´ø¿íÐèÇó,·åÖµËÙ¶È !Max! kB/s
-echo µÚÒ»´Î²âÊÔ !b!
+echo ç¬¬äºŒæ¬¡æµ‹è¯• !a! ä¸æ»¡è¶³å¸¦å®½éœ€æ±‚,å³°å€¼é€Ÿåº¦ !Max! kB/s
+echo ç¬¬ä¸€æ¬¡æµ‹è¯• !b!
 curl --resolve !domain!:443:!b! https://!domain!/!file! -o nul --connect-timeout 5 --max-time 10 > CR.txt 2>&1
 findstr "0:" CR.txt >> CRLF.txt
 CR2CRLF CRLF.txt
@@ -220,8 +220,8 @@ if !Max! GEQ !Speed! (cls&set anycast=!b!&goto end) else (goto four)
 chcp 936
 del CRLF.txt cut.txt speed.txt
 cls
-echo µÚÒ»´Î²âÊÔ !b! ²»Âú×ã´ø¿íÐèÇó,·åÖµËÙ¶È !Max! kB/s
-echo µÚ¶þ´Î²âÊÔ !b!
+echo ç¬¬ä¸€æ¬¡æµ‹è¯• !b! ä¸æ»¡è¶³å¸¦å®½éœ€æ±‚,å³°å€¼é€Ÿåº¦ !Max! kB/s
+echo ç¬¬äºŒæ¬¡æµ‹è¯• !b!
 curl --resolve !domain!:443:!b! https://!domain!/!file! -o nul --connect-timeout 5 --max-time 10 > CR.txt 2>&1
 findstr "0:" CR.txt >> CRLF.txt
 CR2CRLF CRLF.txt
@@ -261,8 +261,8 @@ if !Max! GEQ !Speed! (cls&set anycast=!b!&goto end) else (goto five)
 chcp 936
 del CRLF.txt cut.txt speed.txt
 cls
-echo µÚ¶þ´Î²âÊÔ !b! ²»Âú×ã´ø¿íÐèÇó,·åÖµËÙ¶È !Max! kB/s
-echo µÚÒ»´Î²âÊÔ !c!
+echo ç¬¬äºŒæ¬¡æµ‹è¯• !b! ä¸æ»¡è¶³å¸¦å®½éœ€æ±‚,å³°å€¼é€Ÿåº¦ !Max! kB/s
+echo ç¬¬ä¸€æ¬¡æµ‹è¯• !c!
 curl --resolve !domain!:443:!c! https://!domain!/!file! -o nul --connect-timeout 5 --max-time 10 > CR.txt 2>&1
 findstr "0:" CR.txt >> CRLF.txt
 CR2CRLF CRLF.txt
@@ -302,8 +302,8 @@ if !Max! GEQ !Speed! (cls&set anycast=!c!&goto end) else (goto six)
 chcp 936
 del CRLF.txt cut.txt speed.txt
 cls
-echo µÚÒ»´Î²âÊÔ !c! ²»Âú×ã´ø¿íÐèÇó,·åÖµËÙ¶È !Max! kB/s
-echo µÚ¶þ´Î²âÊÔ !c!
+echo ç¬¬ä¸€æ¬¡æµ‹è¯• !c! ä¸æ»¡è¶³å¸¦å®½éœ€æ±‚,å³°å€¼é€Ÿåº¦ !Max! kB/s
+echo ç¬¬äºŒæ¬¡æµ‹è¯• !c!
 curl --resolve !domain!:443:!c! https://!domain!/!file! -o nul --connect-timeout 5 --max-time 10 > CR.txt 2>&1
 findstr "0:" CR.txt >> CRLF.txt
 CR2CRLF CRLF.txt
@@ -346,7 +346,7 @@ if %time:~6,1% EQU 0 (set /a stopS=%time:~7,1%) else (set /a stopS=%time:~6,2%)
 set /a starttime=%startH%*3600+%startM%*60+%startS%
 set /a stoptime=%stopH%*3600+%stopM%*60+%stopS%
 if %starttime% GTR %stoptime% (set /a alltime=86400-%starttime%+%stoptime%) else (set /a alltime=%stoptime%-%starttime%)
-curl --ipv4 --resolve update.freecdn.workers.dev:443:!anycast! --retry 3 -s -X POST -d """CF-IP"":""!anycast!"",""Speed"":""!Max!""" "https://update.freecdn.workers.dev" -o temp.txt
+curl --ipv4 --resolve update.udpfile.com:443:!anycast! --retry 3 -s -X POST -d "!anycast!-!Max!" "https://update.udpfile.com" -o temp.txt
 for /f "tokens=2 delims==" %%a in ('findstr /C:"publicip" temp.txt') do (
 set publicip=%%a
 )
@@ -358,17 +358,17 @@ set url=%%a
 )
 for /f "tokens=2 delims==" %%a in ('findstr /C:"app" temp.txt') do (
 set app=%%a
-if !app! NEQ 20201208 (echo ·¢ÏÖÐÂ°æ±¾³ÌÐò: !app!&echo ¸üÐÂµØÖ·: !url!&title ¸üÐÂºó²Å¿ÉÒÔÊ¹ÓÃ&echo °´ÈÎÒâ¼üÍË³ö³ÌÐò&pause>nul&exit)
+if !app! NEQ 20210226 (echo å‘çŽ°æ–°ç‰ˆæœ¬ç¨‹åº: !app!&echo æ›´æ–°åœ°å€: !url!&title æ›´æ–°åŽæ‰å¯ä»¥ä½¿ç”¨&echo æŒ‰ä»»æ„é”®é€€å‡ºç¨‹åº&pause>nul&exit)
 )
 for /f "tokens=2 delims==" %%a in ('findstr /C:"database" temp.txt') do (
 set databasenew=%%a
-if !databasenew! NEQ !databaseold! (echo ·¢ÏÖÐÂ°æ±¾Êý¾Ý¿â: !databasenew!&move /Y temp.txt data.txt>nul&echo Êý¾Ý¿â !databasenew! ÒÑ¾­×Ô¶¯¸üÐÂÍê±Ï)
+if !databasenew! NEQ !databaseold! (echo å‘çŽ°æ–°ç‰ˆæœ¬æ•°æ®åº“: !databasenew!&move /Y temp.txt data.txt>nul&echo æ•°æ®åº“ !databasenew! å·²ç»è‡ªåŠ¨æ›´æ–°å®Œæ¯•)
 )
-echo ÓÅÑ¡IP !anycast! Âú×ã %Bandwidth% Mbps´ø¿íÐèÇó&echo ·åÖµËÙ¶È !Max! kB/s
-echo ¹«ÍøIP !publicip! 
-echo Êý¾ÝÖÐÐÄ !colo!
-echo ×Ü¼ÆÓÃÊ± %alltime% Ãë
+echo ä¼˜é€‰IP !anycast! æ»¡è¶³ %Bandwidth% Mbpså¸¦å®½éœ€æ±‚&echo å³°å€¼é€Ÿåº¦ !Max! kB/s
+echo å…¬ç½‘IP !publicip! 
+echo æ•°æ®ä¸­å¿ƒ !colo!
+echo æ€»è®¡ç”¨æ—¶ %alltime% ç§’
 del ip.txt CR.txt CRLF.txt cut.txt speed.txt temp.txt
 RD /S /Q temp
-echo °´ÈÎÒâ¼ü¹Ø±Õ
+echo æŒ‰ä»»æ„é”®å…³é—­
 pause>nul
