@@ -18,18 +18,18 @@ remoteport=443
 			declare -i count
 			rm -rf icmp temp log.txt anycast.txt temp.txt
 			mkdir icmp
-			datafile="/usr/cf/data.txt"
+			datafile="/usr/dns/data.txt"
 			if [[ ! -f "$datafile" ]]
 			then
 				echo 获取CF节点IP
-				curl --retry 3 https://update.freecdn.workers.dev -o data-SIN.txt -#
+				curl --retry 3 https://update.freecdn.workers.dev -o data.txt -#
 			fi
-			domain=$(cat data-SIN.txt | grep domain= | cut -f 2- -d'=')
-			file=$(cat data-SIN.txt | grep file= | cut -f 2- -d'=')
-			databaseold=$(cat data-SIN.txt | grep database= | cut -f 2- -d'=')
+			domain=$(cat data.txt | grep domain= | cut -f 2- -d'=')
+			file=$(cat data.txt | grep file= | cut -f 2- -d'=')
+			databaseold=$(cat data.txt | grep database= | cut -f 2- -d'=')
 			n=0
 			count=$(($RANDOM%5))
-			for i in `cat data-SIN.txt | sed '1,7d'`
+			for i in `cat data.txt | sed '1,7d'`
 			do
 				if [ $n -eq $count ]
 				then
@@ -309,33 +309,14 @@ remoteport=443
 		start_seconds=$(date --date="$starttime" +%s)
 		end_seconds=$(date --date="$endtime" +%s)
 		clear
-		curl --ipv4 --resolve update.freecdn.workers.dev:443:$anycast --retry 3 -s -X POST -d '"CF-IP":"'$anycast'","Speed":"'$max'"' 'https://update.freecdn.workers.dev' -o temp.txt
-		publicip=$(cat temp.txt | grep publicip= | cut -f 2- -d'=')
-		colo=$(cat temp.txt | grep colo= | cut -f 2- -d'=')
-		url=$(cat temp.txt | grep url= | cut -f 2- -d'=')
-		url=$(cat temp.txt | grep url= | cut -f 2- -d'=')
-		app=$(cat temp.txt | grep app= | cut -f 2- -d'=')
-		databasenew=$(cat temp.txt | grep database= | cut -f 2- -d'=')
-		if [ "$app" != "20201208" ]
-		then
-			echo 发现新版本程序: $app
-			echo 更新地址: $url
-			echo 更新后才可以使用
-			exit
-		fi
-		if [ "$databasenew" != "$databaseold" ]
-		then
-			echo 发现新版本数据库: $databasenew
-			mv temp.txt data-SIN.txt
-			echo 数据库 $databasenew 已经自动更新完毕
-		fi
-		rm -rf temp.txt
+		
 		echo 优选IP $anycast 满足 $bandwidth Mbps带宽需求
 		echo 峰值速度 $max kB/s
 		echo 公网IP $publicip
 		echo 数据中心 $colo
 		echo 总计用时 $((end_seconds-start_seconds)) 秒
-		
-		
-                  curl -s -o /dev/null http://xxxxxx:8080/myip.aspx?ip=$anycast?xl=yd                
-                  curl -s -o /dev/null --data "token=xxxxxx&title=$anycast YD IP change&content=$anycast&template=html&topic=ip" http://pushplus.hxtrip.com/send
+		iptables -t nat -D OUTPUT $(iptables -t nat -nL OUTPUT --line-number | grep $localport | awk '{print $1}')
+		iptables -t nat -A OUTPUT -p tcp --dport $localport -j DNAT --to-destination $anycast:$remoteport
+		echo $(date +'%Y-%m-%d %H:%M:%S') IP指向 $anycast>>/usr/dns/cfnat.txt
+                  curl -s -o /dev/null http://xxxxxxx:8080/myip.aspx?ip=$anycast                
+                  curl -s -o /dev/null --data "token=xxxxxx&title=$anycast电信IP更新成功！&content= 优选IP $anycast 满足 $bandwidth Mbps带宽需求<br>峰值速度 $max kB/s<br>数据中心 $colo<br>总计用时 $((end_seconds-start_seconds)) 秒<br>&template=html&topic=ip" http://pushplus.hxtrip.com/send
